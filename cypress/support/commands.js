@@ -23,3 +23,56 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('authToken', (user, password) => {
+    cy.request({
+        method: 'POST',
+        url:'/auth',
+        headers: { 'Content-type': 'application/json' },
+        body: {
+          username: "admin",
+          password: "password123"
+        }
+      }).then(response => {
+        return response.body.token;
+      });
+ });
+
+ Cypress.Commands.add('getRequest', (endpoint, headers = {}, body = {}, qs = {}) => {
+    cy.request({
+        method: 'GET',
+        url: endpoint,
+        headers: { 'Content-type': 'application/json' },
+        qs: qs,
+        body: body,
+        failOnStatusCode: false
+      }).then(response => {
+        return response
+      });
+ });
+
+ Cypress.Commands.add('postRequest', (endpoint, headers = {}, body = {}, qs = {}) => {
+    cy.request({
+        method: 'POST',
+        url: endpoint,
+        headers: { 'Content-type': 'application/json' },
+        qs: qs,
+        body: body,
+        failOnStatusCode: false
+      }).then(response => {
+        return response
+      });
+ });
+
+ Cypress.Commands.add('putRequest', (endpoint, headers = {}, body = {}, qs = {}) => {
+  cy.request({
+      method: 'PUT',
+      url: endpoint,
+      headers: headers,
+      qs: qs,
+      body: body,
+      failOnStatusCode: false
+    }).then(response => {
+      return response
+    });
+});

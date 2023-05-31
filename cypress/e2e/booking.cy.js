@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 
 let bookingId = '';
+let headers = {};
 describe('booking api testing - 1º version', () => {
 
   beforeEach(() => {
@@ -12,7 +13,8 @@ describe('booking api testing - 1º version', () => {
         username: "admin",
         password: "password123"
       }
-    }).as('token')
+    }).as('token');
+
   })
   it('1 - Get all booking ids', () => {
     cy.request({
@@ -338,3 +340,159 @@ describe('booking api testing - 1º version', () => {
     
   });
 });
+
+describe(' booking api testing - 2ª version',() => {
+
+  beforeEach(() => {
+
+    cy.authToken("admin", "password123").as('token');
+
+    cy.fixture('booking/bookingPost.json').as('newBooking');
+    cy.fixture('booking/bookingPut.json').as('updatedBooking');
+  })
+
+  it('1 - Get all booking ids', () => {
+
+    cy.getRequest('/booking','application/json').then(response => {
+      expect(response.status).to.eq(200);
+      expect(response.body).to.be.an('array');
+      expect(response.body).to.have.lengthOf.at.least(1);
+      expect(response.body[0]).to.have.property('bookingid');
+    })
+  });
+
+  it('2 - Get booking id by firstname', () => {
+   
+    let queryString = { 'firstName' : 'test'};
+
+    cy.getRequest('/booking','application/json', queryString).then(response => {
+      expect(response.status).to.eq(200);
+      expect(response.body).to.be.an('array');
+      expect(response.body).to.have.lengthOf.at.least(1);
+      expect(response.body[0]).to.have.property('bookingid');
+    });
+  });
+
+  it('3 - Get booking id by checkin date', () => {
+ 
+    let queryString = { 'checkin' : '2014-05-21'};
+
+    cy.getRequest('/booking','application/json', queryString).then(response => {
+      expect(response.status).to.eq(200);
+      expect(response.body).to.be.an('array');
+      expect(response.body).to.have.lengthOf.at.least(1);
+      expect(response.body[0]).to.have.property('bookingid');
+    })
+  });
+
+  it('4 - Get booking by id', () => {
+
+    cy.getRequest('/booking/1','application/json').then(response => {
+      expect(response.status).to.eq(200);
+      expect(response.headers).to.have.property('content-type', 'application/json; charset=utf-8')
+      expect(response.body).to.be.an('object');
+      expect(response.body).to.have.property('firstname').and.to.be.a('string');
+      expect(response.body).to.have.property('lastname').and.to.be.a('string');
+      expect(response.body).to.have.property('totalprice').and.to.be.a('number');
+      expect(response.body).to.have.property('depositpaid').and.to.be.a('boolean');
+      expect(response.body).to.have.property('bookingdates').and.to.be.an('object');
+      expect(response.body.bookingdates).to.have.property('checkin').and.to.be.a('string');
+      expect(response.body.bookingdates).to.have.property('checkout').and.to.be.a('string');
+    })
+  });
+
+  it('5 - Creating a new booking with success return status code 200', () => {
+  
+    cy.fixture('booking/bookingPost.json').then((newBooking) => {
+
+      cy.postRequest('/booking','application/json', newBooking).then((response) => {
+        expect(response.status).to.eq(200);
+        expect(response.headers).to.have.property('content-type', 'application/json; charset=utf-8')
+        expect(response.body).to.be.an('object');
+        expect(response.body).to.have.property('bookingid').and.to.be.a('number');
+        expect(response.body).to.have.property('booking').and.to.be.an('object');
+        expect(response.body.booking).to.have.property('firstname', 'Carol').and.to.be.a('string');
+        expect(response.body.booking).to.have.property('lastname', 'Louzada').and.to.be.a('string');
+        expect(response.body.booking).to.have.property('totalprice').and.to.be.a('number');
+        expect(response.body.booking).to.have.property('depositpaid').and.to.be.a('boolean');
+        expect(response.body.booking).to.have.property('bookingdates').and.to.be.an('object');
+        expect(response.body.booking.bookingdates).to.have.property('checkin').and.to.be.a('string');
+        expect(response.body.booking.bookingdates).to.have.property('checkout').and.to.be.a('string');
+
+        cy.wrap(response).as('bookingCreated', {type: 'static'});
+      }).then(function() {
+
+        cy.getRequest('/booking/'+ this.bookingCreated.body.bookingid,'application/json')
+        .then((response) => {	
+          expect(response.status).to.eq(200);
+          expect(response.headers).to.have.property('content-type', 'application/json; charset=utf-8')
+          expect(response.body).to.be.an('object');
+          expect(response.body).to.have.property('firstname', 'Carol').and.to.be.a('string');
+          expect(response.body).to.have.property('lastname', 'Louzada').and.to.be.a('string');
+          expect(response.body).to.have.property('totalprice').and.to.be.a('number');
+          expect(response.body).to.have.property('depositpaid').and.to.be.a('boolean');
+          expect(response.body).to.have.property('bookingdates').and.to.be.an('object');
+          expect(response.body.bookingdates).to.have.property('checkin').and.to.be.a('string');
+          expect(response.body.bookingdates).to.have.property('checkout').and.to.be.a('string');
+        });
+      });
+    });
+  });
+
+  it('6 - Update booking by id without authorization', () => {
+
+     headers = {
+       "Accept": "application/json", 
+       "Content-type": "application/json"
+    };
+
+    cy.get('@newBooking').then((newBooking) => {
+      cy.postRequest('/booking','application/json', newBooking)
+        .then((response) => {
+
+          cy.get('@updatedBooking').then((updatedBooking) => {
+            cy.putRequest('/booking/'+ response.body.bookingid, headers, updatedBooking)
+              .then((response) => {	
+              expect(response.status).to.eq(403);
+              expect(response.headers).to.have.property('content-type', 'text/plain; charset=utf-8')
+              expect(response.body).to.be.an("string")
+            });
+          });
+        });
+    });
+  });
+
+  it("7 - Update booking by id with authorization header", () => {
+
+    cy.get('@token').then((token) => {
+      headers = {
+        "Accept": "application/json",
+        "Content-type": "application/json",
+        "Cookie": "token="+token,
+      };
+
+      cy.get("@newBooking").then((newBooking) => {
+        cy.postRequest("/booking", "application/json", newBooking)
+          .then((response) => {
+
+            cy.get("@updatedBooking").then((updatedBooking) => {
+              cy.putRequest(
+                "/booking/" + response.body.bookingid,
+                headers,
+                updatedBooking
+              ).then((response) => {
+                expect(response.status).to.eq(200);
+                expect(response.headers).to.have.property(
+                  "content-type",
+                  "application/json; charset=utf-8"
+                );
+                expect(response.body).to.be.an("object");
+              });
+            });
+          });
+      });
+    });
+  });
+
+});
+
