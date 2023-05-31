@@ -10,6 +10,7 @@ module.exports = defineConfig({
     },
     env:{
       requestMode: true,
+      hideCredentials: true,
     }
     
   },

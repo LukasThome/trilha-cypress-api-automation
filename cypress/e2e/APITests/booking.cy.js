@@ -2,7 +2,7 @@
 
 let bookingId = '';
 let headers = {};
-describe('booking api testing - 1º version', () => {
+describe('Booking api testing - 1º version', () => {
 
   beforeEach(() => {
     cy.request({
@@ -20,7 +20,7 @@ describe('booking api testing - 1º version', () => {
     cy.request({
       method: 'GET',
       url:'/booking',
-      headers: { Accept: 'application/json' }
+      headers: {  'Content-Type': 'application/json' }
     }).then((response) => {	
       expect(response.status).to.eq(200);
       expect(response.body).to.be.an('array');
@@ -34,7 +34,7 @@ describe('booking api testing - 1º version', () => {
       method: 'GET',
       url:'/booking',
       qs: { 'firstName' : 'test'},
-      headers: { Accept: 'application/json' }
+      headers: { 'Content-Type': 'application/json'}
     }).then((response) => {	
       expect(response.status).to.eq(200);
       expect(response.body).to.be.an('array');
@@ -48,7 +48,7 @@ describe('booking api testing - 1º version', () => {
       method: 'GET',
       url:'/booking',
       qs: { 'checkin' : '2014-05-21'},
-      headers: { Accept: 'application/json' }
+      headers: { 'Content-Type': 'application/json'}
     }).then((response) => {	
       expect(response.status).to.eq(200);
       expect(response.body).to.be.an('array');
@@ -60,7 +60,7 @@ describe('booking api testing - 1º version', () => {
     cy.request({
       method: 'GET',
       url:'/booking/1',
-      headers: { Accept: 'application/json' }
+      headers:{ 'Accept': 'application/json'}
     }).then((response) => {	
       expect(response.status).to.eq(200);
       expect(response.headers).to.have.property('content-type', 'application/json; charset=utf-8')
@@ -80,7 +80,7 @@ describe('booking api testing - 1º version', () => {
     cy.request({
       method: 'POST',
       url:'/booking',
-      headers: { Accept: 'application/json'},
+      headers: { 'Content-Type': 'application/json'},
       body: {
         firstname: "Carol",
         lastname: "Louzada",
@@ -117,7 +117,7 @@ describe('booking api testing - 1º version', () => {
       cy.request({
         method: 'GET',
         url:'/booking/'+ this.bookingCreated.body.bookingid ,
-        headers: { Accept: 'application/json' }
+        headers: { 'Accept': 'application/json' }
       }).then((response) => {	
         expect(response.status).to.eq(200);
         expect(response.headers).to.have.property('content-type', 'application/json; charset=utf-8')
@@ -138,7 +138,7 @@ describe('booking api testing - 1º version', () => {
     cy.request({
       method: 'POST',
       url:'/booking',
-      headers: { Accept: 'application/json'},
+      headers: { 'Content-Type': 'application/json'},
       body: {
         firstname: "Carol",
         lastname: "Louzada",
@@ -171,7 +171,7 @@ describe('booking api testing - 1º version', () => {
         cy.request({
           method: 'GET',
           url:'/booking/'+ bookingId ,
-          headers: { Accept: 'application/json' }
+          headers: { 'Content-Type': 'application/json'}
         }).then((response) => {	
           expect(response.status).to.eq(200);
           expect(response.headers).to.have.property('content-type', 'application/json; charset=utf-8')
@@ -194,7 +194,7 @@ describe('booking api testing - 1º version', () => {
     cy.request({
       method: 'POST',
       url:'/booking',
-      headers: { Accept: 'application/json'},
+      headers: {'Content-Type': 'application/json'},
       body: {
         firstname: "Carol",
         lastname: "Louzada",
@@ -210,7 +210,7 @@ describe('booking api testing - 1º version', () => {
       cy.request({
         method: 'POST',
         url:'/booking',
-        headers: { Accept: 'application/json'},
+        headers: {'Content-Type': 'application/json'},
         body: {
           firstname: "Carol",
           lastname: "Louzada",
@@ -242,7 +242,7 @@ describe('booking api testing - 1º version', () => {
         cy.request({
           method: 'GET',
           url:'/booking/'+ bookingId ,
-          headers: { Accept: 'application/json' }
+          headers: { 'Content-Type': 'application/json'}
         }).then((response) => {	
           expect(response.status).to.eq(200);
           expect(response.headers).to.have.property('content-type', 'application/json; charset=utf-8')
@@ -266,7 +266,7 @@ describe('booking api testing - 1º version', () => {
     cy.request({
       method: 'POST',
       url:'/booking',
-      headers: { Accept: 'application/json'},
+      headers: { 'Content-Type': 'application/json'},
       body: {
         firstname: "Luiza",
         lastname: "Santos",
@@ -282,7 +282,7 @@ describe('booking api testing - 1º version', () => {
       cy.request({
         method: 'PUT',
         url:'/booking/'+ response.body.bookingid,
-        headers: { Accept: 'application/json', 'Content-type': 'application/json'},
+        headers: { 'Accept': 'application/json', 'Content-type': 'application/json'},
         failOnStatusCode: false
       }).then((response) => {	
         expect(response.status).to.eq(403);
@@ -297,7 +297,7 @@ describe('booking api testing - 1º version', () => {
       cy.request({
         method: 'POST',
         url:'/booking',
-        headers: { Accept: 'application/json'},
+        headers: { 'Content-Type': 'application/json'},
         body: {
           firstname: "Luiza",
           lastname: "Santos",
@@ -315,7 +315,7 @@ describe('booking api testing - 1º version', () => {
           url:'/booking/'+ response.body.bookingid,
           auth:{ user: 'admin', password: 'password123'},
           headers: { 
-          Accept: 'application/json', 
+          'Accept': 'application/json', 
           'Content-type': 'application/json',  
         },
         body: {
@@ -332,16 +332,14 @@ describe('booking api testing - 1º version', () => {
           failOnStatusCode: false
         }).then((response) => {	
         
-
           // O que você colocaria de asseração ?
         });
       });
     });
-    
   });
 });
 
-describe(' booking api testing - 2ª version',() => {
+describe('Booking api testing - 2ª version',() => {
 
   beforeEach(() => {
 
@@ -353,7 +351,7 @@ describe(' booking api testing - 2ª version',() => {
 
   it('1 - Get all booking ids', () => {
 
-    cy.getRequest('/booking','application/json').then(response => {
+    cy.getRequest('/booking',{ 'Content-Type': 'application/json'}).then(response => {
       expect(response.status).to.eq(200);
       expect(response.body).to.be.an('array');
       expect(response.body).to.have.lengthOf.at.least(1);
@@ -365,7 +363,7 @@ describe(' booking api testing - 2ª version',() => {
    
     let queryString = { 'firstName' : 'test'};
 
-    cy.getRequest('/booking','application/json', queryString).then(response => {
+    cy.getRequest('/booking',{ 'Content-Type': 'application/json'}, queryString).then(response => {
       expect(response.status).to.eq(200);
       expect(response.body).to.be.an('array');
       expect(response.body).to.have.lengthOf.at.least(1);
@@ -377,7 +375,7 @@ describe(' booking api testing - 2ª version',() => {
  
     let queryString = { 'checkin' : '2014-05-21'};
 
-    cy.getRequest('/booking','application/json', queryString).then(response => {
+    cy.getRequest('/booking',{ 'Content-Type': 'application/json'}, queryString).then(response => {
       expect(response.status).to.eq(200);
       expect(response.body).to.be.an('array');
       expect(response.body).to.have.lengthOf.at.least(1);
@@ -387,7 +385,7 @@ describe(' booking api testing - 2ª version',() => {
 
   it('4 - Get booking by id', () => {
 
-    cy.getRequest('/booking/1','application/json').then(response => {
+    cy.getRequest('/booking/1',{'Content-Type': 'application/json'}).then(response => {
       expect(response.status).to.eq(200);
       expect(response.headers).to.have.property('content-type', 'application/json; charset=utf-8')
       expect(response.body).to.be.an('object');
@@ -405,7 +403,7 @@ describe(' booking api testing - 2ª version',() => {
   
     cy.fixture('booking/bookingPost.json').then((newBooking) => {
 
-      cy.postRequest('/booking','application/json', newBooking).then((response) => {
+      cy.postRequest('/booking',{'Content-type':'application/json'}, newBooking).then((response) => {
         expect(response.status).to.eq(200);
         expect(response.headers).to.have.property('content-type', 'application/json; charset=utf-8')
         expect(response.body).to.be.an('object');
@@ -422,7 +420,7 @@ describe(' booking api testing - 2ª version',() => {
         cy.wrap(response).as('bookingCreated', {type: 'static'});
       }).then(function() {
 
-        cy.getRequest('/booking/'+ this.bookingCreated.body.bookingid,'application/json')
+        cy.getRequest('/booking/'+ this.bookingCreated.body.bookingid,{'Content-type':'application/json'})
         .then((response) => {	
           expect(response.status).to.eq(200);
           expect(response.headers).to.have.property('content-type', 'application/json; charset=utf-8')
@@ -447,7 +445,7 @@ describe(' booking api testing - 2ª version',() => {
     };
 
     cy.get('@newBooking').then((newBooking) => {
-      cy.postRequest('/booking','application/json', newBooking)
+      cy.postRequest('/booking',{'Content-type':'application/json'}, newBooking)
         .then((response) => {
 
           cy.get('@updatedBooking').then((updatedBooking) => {
@@ -472,7 +470,7 @@ describe(' booking api testing - 2ª version',() => {
       };
 
       cy.get("@newBooking").then((newBooking) => {
-        cy.postRequest("/booking", "application/json", newBooking)
+        cy.postRequest("/booking", {'Content-type':'application/json'}, newBooking)
           .then((response) => {
 
             cy.get("@updatedBooking").then((updatedBooking) => {

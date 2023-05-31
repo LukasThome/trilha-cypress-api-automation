@@ -65,5 +65,4 @@ describe('auth api testing', () => {
             expect(response.body).not.to.be.empty;
         });
     });
-
 });

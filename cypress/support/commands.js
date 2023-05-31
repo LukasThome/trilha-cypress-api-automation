@@ -30,8 +30,8 @@ Cypress.Commands.add('authToken', (user, password) => {
         url:'/auth',
         headers: { 'Content-type': 'application/json' },
         body: {
-          "username": "user",
-          "password": "admin"
+          "username": user,
+          "password": password
         },
         failOnStatusCode: false
       }).then(response => {
@@ -43,7 +43,7 @@ Cypress.Commands.add('authToken', (user, password) => {
     cy.request({
         method: 'GET',
         url: endpoint,
-        headers: { 'Content-type': 'application/json' },
+        headers: headers,
         qs: qs,
         body: body,
         failOnStatusCode: false
