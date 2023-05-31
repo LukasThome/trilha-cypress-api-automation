@@ -4,7 +4,7 @@
   "description": "Esse repositório engloba o código criado para o curso de automação web api da trilha de Cypress da DIO.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "run-api-tests": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",

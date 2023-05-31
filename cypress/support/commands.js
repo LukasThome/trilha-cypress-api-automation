@@ -30,9 +30,10 @@ Cypress.Commands.add('authToken', (user, password) => {
         url:'/auth',
         headers: { 'Content-type': 'application/json' },
         body: {
-          username: "admin",
-          password: "password123"
-        }
+          "username": "user",
+          "password": "admin"
+        },
+        failOnStatusCode: false
       }).then(response => {
         return response.body.token;
       });
@@ -51,11 +52,11 @@ Cypress.Commands.add('authToken', (user, password) => {
       });
  });
 
- Cypress.Commands.add('postRequest', (endpoint, headers = {}, body = {}, qs = {}) => {
+ Cypress.Commands.add('postRequest', (endpoint, headers = {} ,body = {} , qs = {}) => {
     cy.request({
         method: 'POST',
         url: endpoint,
-        headers: { 'Content-type': 'application/json' },
+        headers: headers,
         qs: qs,
         body: body,
         failOnStatusCode: false
