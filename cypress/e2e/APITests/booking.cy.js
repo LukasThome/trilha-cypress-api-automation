@@ -451,9 +451,9 @@ describe('Booking api testing - 2ª version',() => {
           cy.get('@updatedBooking').then((updatedBooking) => {
             cy.putRequest('/booking/'+ response.body.bookingid, headers, updatedBooking)
               .then((response) => {	
-              expect(response.status).to.eq(403);
-              expect(response.headers).to.have.property('content-type', 'text/plain; charset=utf-8')
-              expect(response.body).to.be.an("string")
+                expect(response.status).to.eq(403);
+                expect(response.headers).to.have.property('content-type', 'text/plain; charset=utf-8')
+                expect(response.body).to.be.an("string")
             });
           });
         });
@@ -479,8 +479,8 @@ describe('Booking api testing - 2ª version',() => {
                 headers,
                 updatedBooking
               ).then((response) => {
-                expect(response.status).to.eq(200);
-                expect(response.headers).to.have.property(
+                  expect(response.status).to.eq(200);
+                  expect(response.headers).to.have.property(
                   "content-type",
                   "application/json; charset=utf-8"
                 );

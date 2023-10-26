@@ -20,23 +20,6 @@ describe('auth api testing', () => {
         });
     });
 
-    it(' 1 - POST credentials to auth endpoint with sucess - 2º version', () => {
-
-        cy.request({
-            method: 'POST',
-            url:'/auth',
-            body:{
-                "username": "admin",
-                "password": "password123"
-            },
-            headers: { 'Content-Type': 'application/json'},
-            failOnStatusCode: false
-        }).then((response) => {
-            expect(response.status).to.eq(200);
-            expect(response.body).to.have.property('token').and.to.be.a('string');
-            expect(response.body).not.to.be.empty;
-        });
-    });
 
     it(' 2 - POST credentials to auth endpoint with sucess - 2º version', () => {
 
@@ -44,8 +27,11 @@ describe('auth api testing', () => {
             "username": "admin",
             "password": "password123"
         };
+        
 
-        cy.postRequest("/auth", {"Content-type": "application/json"},  body ).then((response) => {
+        cy.postRequest(Cypress.env('auth_url'), {"Content-type": "application/json"},  body )
+        .then((response) => {
+            debugger
             expect(response.status).to.eq(200);
             expect(response.body).to.have.property('token').and.to.be.a('string');
             expect(response.body).not.to.be.empty;
