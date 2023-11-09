@@ -1,7 +1,7 @@
 const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
-  projectId: 'yc3n6k',
+  projectId: 'jv3vn6',
   e2e: {
     baseUrl:'https://restful-booker.herokuapp.com',
     requestTimeout: 6000,

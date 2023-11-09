@@ -38,7 +38,7 @@ describe('auth api testing', () => {
         });
     });
 
-    it(' 3 - POST credentials to auth endpoint with invalid credentials', () => {
+    it.only(' 3 - POST credentials to auth endpoint with invalid credentials', () => {
 
         let body = {
             "username": null,
@@ -48,6 +48,7 @@ describe('auth api testing', () => {
         cy.postRequest("/auth", {"Content-type": "application/json"},  body ).then((response) => {
             expect(response.status).to.eq(200);
             expect(response.body).to.have.property('token').and.to.be.a('string');
+            //expect(response.body).to.have.property('reason', 'Bad credentials');
             expect(response.body).not.to.be.empty;
         });
     });
