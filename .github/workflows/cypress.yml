@@ -1,0 +1,33 @@
+name: Cypress Tests
+on: 
+
+  push:
+      branches: ["part2"]
+  pull_request: 
+      branches: ["part2"]
+      
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    
+  
+    container:
+      image: cypress/browsers:22.15.0
+      options: --user 1001
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          start: npm start
+          wait-on: 'http://localhost:3000'
+          record: true
+          parallel: true # Runs test in parallel using settings above
+        env:
+          # For recording and parallelization to work you must set your CYPRESS_RECORD_KEY
+          # in GitHub repo → Settings → Secrets → Actions
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          # Creating a token https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
+          CYPRESS_GITHUB_KEY: ${{ secrets.CYPRESS_GITHUB_KEY }}
