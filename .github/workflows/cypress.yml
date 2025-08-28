@@ -3,9 +3,9 @@ name:  Minha primeira execução com actions
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "part2" ]
+    branches: [ "LukasThome-DioProject" ]
   pull_request:
-    branches: [ "part2" ]
+    branches: [ "LukasThome-DioProject" ]
 jobs:
   cypress-run:
     # The type of runner that the job will run on
