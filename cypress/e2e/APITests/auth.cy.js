@@ -8,8 +8,8 @@ describe('auth api testing', () => {
             method: 'POST',
             url:'/auth',
             body:{
-                "username": "admin",
-                "password": "password123"
+                "username": Cypress.env('username'),
+                "password": Cypress.env('password')
             },
             headers: { 'Content-Type': 'application/json'},
             failOnStatusCode: false
@@ -24,8 +24,8 @@ describe('auth api testing', () => {
     it(' 2 - POST credentials to auth endpoint with sucess - 2º version', () => {
 
         let body = {
-            "username": "admin",
-            "password": "password123"
+            "username": Cypress.env('username'),
+            "password": Cypress.env('password')
         };
         
 
@@ -42,7 +42,7 @@ describe('auth api testing', () => {
 
         let body = {
             "username": null,
-            "password": "password123"
+            "password": "passwordggg"
         };
 
         cy.postRequest("/auth", {"Content-type": "application/json"},  body ).then((response) => {

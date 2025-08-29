@@ -1,4 +1,4 @@
-/// <reference types="cypress" />
+// <reference types="cypress" />
 
 let bookingId = '';
 let headers = {};
@@ -10,8 +10,8 @@ describe('Booking api testing - 1º version', () => {
       url:'/auth',
       headers: { 'Content-type': 'application/json' },
       body: {
-        username: "admin",
-        password: "password123"
+        username: Cypress.env('username'),
+        password: Cypress.env('password')
       }
     }).as('token');
 
@@ -313,7 +313,7 @@ describe('Booking api testing - 1º version', () => {
         cy.request({
           method: 'PUT',
           url:'/booking/'+ response.body.bookingid,
-          auth:{ user: 'admin', password: 'password123'},
+          auth:{ user: Cypress.env('username'), password: Cypress.env('password')},
           headers: { 
           'Accept': 'application/json', 
           'Content-type': 'application/json',  
@@ -343,7 +343,7 @@ describe('Booking api testing - 2ª version',() => {
 
   beforeEach(() => {
 
-    cy.authToken("admin", "password123").as('token');
+    cy.authToken(Cypress.env('username'), Cypress.env('password')).as('token');
 
     cy.fixture('booking/bookingPost.json').as('newBooking');
     cy.fixture('booking/bookingPut.json').as('updatedBooking');

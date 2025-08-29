@@ -1,7 +1,9 @@
 const { defineConfig } = require("cypress");
 
+require('dotenv').config();
+
 module.exports = defineConfig({
-  projectId: 'wqyuzj',
+  projectId: process.env.CYPRESS_PROJECT_ID,
   e2e: {
     baseUrl:'https://restful-booker.herokuapp.com',
     requestTimeout: 6000,
@@ -12,8 +14,8 @@ module.exports = defineConfig({
     env:{
       requestMode: true,
       hideCredentials: true,
-      username : 'admin',
-      password : 'password123',
+      username : process.env.CYPRESS_USERNAME,
+      password : process.env.CYPRESS_PASSWORD,
       auth_url: '/auth'
     }
   },
